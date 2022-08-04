@@ -1,0 +1,14 @@
+::ng-deep {
+  .mat-tree-node {
+    min-height: 25px;
+
+  }
+  .mat-tree{
+    background: transparent !important;
+  }
+  .mat-icon-button {
+    width: 25px !important;
+    height: 25px !important;
+    line-height: 25px !important;
+  }
+}
