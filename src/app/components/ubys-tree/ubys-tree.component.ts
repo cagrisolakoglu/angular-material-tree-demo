@@ -43,6 +43,8 @@ export class UbysTreeComponent implements OnInit {
     data: []
   };
 
+  @Input() removeParentChildNodeDependency: boolean = true;
+
   //**********************************************//
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
@@ -87,7 +89,7 @@ export class UbysTreeComponent implements OnInit {
   ngOnInit(): void {
     if (this.treeDataSource.data.length > 0) {
       // this.dataSource.data = this.dataService.createDataSource(this.treeDataSource);
-      const data= this.dataService.createDataSource(this.treeDataSource);
+      const data = this.dataService.createDataSource(this.treeDataSource);
       this.dataService.dataChange.next(data);
     }
   }
@@ -137,32 +139,48 @@ export class UbysTreeComponent implements OnInit {
 
   /** Toggle the to-do item selection. Select/deselect all the descendants node */
   treeItemSelectionToggle(node: FlatTreeNode): void {
-    this.checklistSelection.toggle(node);
+
+    if (!this.removeParentChildNodeDependency) {
+      this.checklistSelection.toggle(node);
+    }
+
     const descendants = this.treeControl.getDescendants(node);
+    console.log('descendants', descendants);
     this.checklistSelection.isSelected(node)
       ? this.checklistSelection.select(...descendants)
       : this.checklistSelection.deselect(...descendants);
 
     // Force update for the parent
     descendants.forEach(child => this.checklistSelection.isSelected(child));
-    this.checkAllParentsSelection(node);
+
+    if (!this.removeParentChildNodeDependency) {
+      this.checkAllParentsSelection(node);
+    }
+
   }
 
   /** Toggle a leaf to-do item selection. Check all the parents to see if they changed */
   treeLeafItemSelectionToggle(node: FlatTreeNode): void {
-    this.checklistSelection.toggle(node);
-    this.checkAllParentsSelection(node);
+    console.log('node', node);
+    if (!this.removeParentChildNodeDependency) {
+      this.checklistSelection.toggle(node);
+      this.checkAllParentsSelection(node);
+    }
+
   }
 
   /* Checks all the parents when a leaf node is selected/unselected */
   checkAllParentsSelection(node: FlatTreeNode): void {
     let parent: FlatTreeNode | null = this.getParentNode(node);
     while (parent) {
-      this.checkRootNodeSelection(parent);
+      if (!this.removeParentChildNodeDependency) {
+        this.checkRootNodeSelection(parent);
+      }
+
       parent = this.getParentNode(parent);
     }
 
-    console.log(this.checklistSelection.selected );
+    console.log(this.checklistSelection.selected);
   }
 
   /** Check root node checked state and change it accordingly */

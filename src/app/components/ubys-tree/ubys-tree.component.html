@@ -1,75 +1,38 @@
 
-<hr>
 <mat-form-field>
-  <input
-    matInput
-    placeholder="Search"
-    (input)="filterTree($any($event.target).value)"
-  />
+  <input matInput placeholder="Search" (input)="filterTree($any($event.target).value)">
 </mat-form-field>
-<!-- <button mat-raised-button (click)="addNode()">Add Node</button> -->
-<!-- <button mat-raised-button (click)="removeNode()">Remove Node</button> -->
-<!-- <button makt-raised-button (click)="editNode()">Edit Node</button> -->
-<!-- <button mat-raised-button (click)="moveNode()">Move Node</button> -->
-<!-- <button mat-raised-button (click)="copyNode()">Copy Node</button> -->
-<!-- <button mat-raised-button (click)="pasteNode()">Paste Node</button> -->
+
 <button mat-mini-fab color="primary"  (click)="expandAll()">
   <mat-icon>expand_more</mat-icon>
 </button>
 <button mat-mini-fab color="primary" (click)="collapseAll()">
   <mat-icon>expand_less</mat-icon>
 </button>
-<!-- <button mat-raised-button (click)="clearFilter()">Clear Filter</button> -->
-<!-- <button mat-raised-button (click)="clear()">Clear</button> -->
-<!-- <button mat-raised-button (click)="save()">Save</button>
-<button mat-raised-button (click)="load()">Load</button> -->
-<!-- <button mat-raised-button (click)="loadFromFile()">Load From File</button>
-<button mat-raised-button (click)="loadFromUrl()">Load From Url</button>
-<button mat-raised-button (click)="loadFromObject()">Load From Object</button>
-<button mat-raised-button (click)="loadFromString()">Load From String</button>
-<button mat-raised-button (click)="loadFromNode()">Load From Node</button>
-<button mat-raised-button (click)="loadFromArray()">Load From Array</button>
-<button mat-raised-button (click)="loadFromJson()">Load From Json</button>
-<button mat-raised-button (click)="loadFromText()">Load From Text</button>
-<button mat-raised-button (click)="loadFromBlob()">Load From Blob</button> -->
-<hr>
+
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-  <mat-tree-node
-    *matTreeNodeDef="let node"
-    matTreeNodeToggle
-    matTreeNodePadding
-  >
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
     <button mat-icon-button disabled></button>
-    <mat-checkbox
-      class="checklist-leaf-node"
-      [checked]="checklistSelection.isSelected(node)"
-      (change)="treeLeafItemSelectionToggle(node)"
-      >{{ node.name }}</mat-checkbox
-    >
+    <mat-checkbox class="checklist-leaf-node"
+                  [checked]="checklistSelection.isSelected(node)"
+                  (change)="treeLeafItemSelectionToggle(node)">{{node.name}}</mat-checkbox>
   </mat-tree-node>
 
-  <mat-tree-node
-    *matTreeNodeDef="let node; when: hasNoContent"
-    matTreeNodePadding
-  >
+  <mat-tree-node *matTreeNodeDef="let node; when: hasNoContent" matTreeNodePadding>
     <button mat-icon-button disabled></button>
+
   </mat-tree-node>
 
   <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-    <button
-      mat-icon-button
-      matTreeNodeToggle
-      [attr.aria-label]="'Toggle ' + node.name"
-    >
+    <button mat-icon-button matTreeNodeToggle
+            [attr.aria-label]="'Toggle ' + node.name">
       <mat-icon class="mat-icon-rtl-mirror">
-        {{ treeControl.isExpanded(node) ? "expand_more" : "chevron_right" }}
+        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
       </mat-icon>
     </button>
-    <mat-checkbox
-      [checked]="descendantsAllSelected(node)"
-      [indeterminate]="descendantsPartiallySelected(node)"
-      (change)="treeItemSelectionToggle(node)"
-      >{{ node.name }}</mat-checkbox
-    >
+    <mat-checkbox [checked]="descendantsAllSelected(node)"
+                  [indeterminate]="descendantsPartiallySelected(node)"
+                  (change)="treeItemSelectionToggle(node)">{{node.name}}</mat-checkbox>
+
   </mat-tree-node>
 </mat-tree>
