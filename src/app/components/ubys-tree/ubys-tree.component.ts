@@ -264,4 +264,12 @@ export class UbysTreeComponent implements OnInit {
     }
     return filteredData;
   }
+
+  expandAll() {
+    this.treeControl.expandAll();
+  }
+
+  collapseAll() {
+    this.treeControl.collapseAll();
+  }
 }
