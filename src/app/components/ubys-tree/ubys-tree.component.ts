@@ -43,7 +43,6 @@ export class UbysTreeComponent implements OnInit {
     data: []
   };
 
-  tempData: any = [];
   //**********************************************//
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
@@ -87,10 +86,10 @@ export class UbysTreeComponent implements OnInit {
   }
   ngOnInit(): void {
     if (this.treeDataSource.data.length > 0) {
-      this.dataSource.data = this.dataService.createDataSource(this.treeDataSource);
-      this.tempData = { ...this.dataSource.data };
+      // this.dataSource.data = this.dataService.createDataSource(this.treeDataSource);
+      const data= this.dataService.createDataSource(this.treeDataSource);
+      this.dataService.dataChange.next(data);
     }
-
   }
 
 
@@ -220,11 +219,9 @@ export class UbysTreeComponent implements OnInit {
   // pass mat input string to recursive function and return data
   filterTree(filterText: string) {
     // use filter input text, return filtered TREE_DATA, use the 'name' object value
-    if (filterText) {
-      this.dataSource.data = this.filterRecursive(filterText, this.dataSource.data, "name");
-    } else {
-      this.dataService.data.concat( this.tempData);
-    }
+    const data = this.filterRecursive(filterText, this.dataSource.data, "name");
+    // Notify the change.
+    this.dataService.dataChange.next(data);
   }
 
   // filter string from mat input filter
