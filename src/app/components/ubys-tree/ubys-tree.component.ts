@@ -237,9 +237,11 @@ export class UbysTreeComponent implements OnInit {
   // pass mat input string to recursive function and return data
   filterTree(filterText: string) {
     // use filter input text, return filtered TREE_DATA, use the 'name' object value
-    const data = this.filterRecursive(filterText, this.dataSource.data, "name");
+
+    const data = this.dataService.createDataSource(this.treeDataSource);
+    const data2 = this.filterRecursive(filterText, data, "name");
     // Notify the change.
-    this.dataService.dataChange.next(data);
+    this.dataService.dataChange.next(data2);
   }
 
   // filter string from mat input filter
