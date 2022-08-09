@@ -43,7 +43,7 @@ export class UbysTreeComponent implements OnInit {
     data: []
   };
 
-  @Input() removeParentChildNodeDependency: boolean = true;
+  @Input() public removeParentChildNodeDependency: boolean = false;
 
   //**********************************************//
 
