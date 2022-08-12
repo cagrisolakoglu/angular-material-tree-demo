@@ -35,7 +35,6 @@ export class UbysTreeComponent implements OnInit {
   // @Input() public isCheckboxIndeterminateDisabled: boolean = false;
   // @Input() public isCheckboxCheckedDisabled: boolean = false;
   @Input() public isFilterable: boolean = false;
-  @Input() public isMultiSelectable: boolean = true;
   @Input() public treeDataSource: ITreeModel<any> = {
     keyPropertyName: "id",
     valuePropertyName: "name",
@@ -43,7 +42,8 @@ export class UbysTreeComponent implements OnInit {
     data: []
   };
 
-  @Input() public removeParentChildNodeDependency: boolean = false;
+  @Input() public turnOffHierarchicalSelection: boolean = false;
+  @Input() public showControls: boolean = false;
 
   //**********************************************//
 
@@ -80,15 +80,12 @@ export class UbysTreeComponent implements OnInit {
     this.treeControl = new FlatTreeControl<FlatTreeNode>(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-
-
     dataService.dataChange.subscribe(data => {
       this.dataSource.data = data;
     });
   }
   ngOnInit(): void {
     if (this.treeDataSource.data.length > 0) {
-      // this.dataSource.data = this.dataService.createDataSource(this.treeDataSource);
       const data = this.dataService.createDataSource(this.treeDataSource);
       this.dataService.dataChange.next(data);
     }
@@ -140,7 +137,7 @@ export class UbysTreeComponent implements OnInit {
   /** Toggle the to-do item selection. Select/deselect all the descendants node */
   treeItemSelectionToggle(node: FlatTreeNode): void {
 
-    if (!this.removeParentChildNodeDependency) {
+    if (!this.turnOffHierarchicalSelection) {
       this.checklistSelection.toggle(node);
     }
 
@@ -153,7 +150,7 @@ export class UbysTreeComponent implements OnInit {
     // Force update for the parent
     descendants.forEach(child => this.checklistSelection.isSelected(child));
 
-    if (!this.removeParentChildNodeDependency) {
+    if (!this.turnOffHierarchicalSelection) {
       this.checkAllParentsSelection(node);
     }
 
@@ -162,7 +159,7 @@ export class UbysTreeComponent implements OnInit {
   /** Toggle a leaf to-do item selection. Check all the parents to see if they changed */
   treeLeafItemSelectionToggle(node: FlatTreeNode): void {
     console.log('node', node);
-    if (!this.removeParentChildNodeDependency) {
+    if (!this.turnOffHierarchicalSelection) {
       this.checklistSelection.toggle(node);
       this.checkAllParentsSelection(node);
     }
@@ -173,7 +170,7 @@ export class UbysTreeComponent implements OnInit {
   checkAllParentsSelection(node: FlatTreeNode): void {
     let parent: FlatTreeNode | null = this.getParentNode(node);
     while (parent) {
-      if (!this.removeParentChildNodeDependency) {
+      if (!this.turnOffHierarchicalSelection) {
         this.checkRootNodeSelection(parent);
       }
 
@@ -220,38 +217,15 @@ export class UbysTreeComponent implements OnInit {
     return null;
   }
 
-  // /** Select the category so we can insert the new item. */
-  // addNewItem(node: FlatTreeNode) {
-  //   const parentNode = this.flatNodeMap.get(node);
-  //   this._database.insertItem(parentNode!, '');
-  //   this.treeControl.expand(node);
-  // }
 
-  // /** Save the node to database */
-  // saveNode(node: FlatTreeNode, itemValue: string) {
-  //   const nestedNode = this.flatNodeMap.get(node);
-  //   this._database.updateItem(nestedNode!, itemValue);
-  // }
-
-
-  // pass mat input string to recursive function and return data
   filterTree(filterText: string) {
-    // use filter input text, return filtered TREE_DATA, use the 'name' object value
-
     const data = this.dataService.createDataSource(this.treeDataSource);
-    const data2 = this.filterRecursive(filterText, data, "name");
-    // Notify the change.
-    this.dataService.dataChange.next(data2);
-  }
-
-  // filter string from mat input filter
-  applyFilter(filterText: string) {
-    this.filterTree(filterText);
-    // show / hide based on state of filter string
+    const filteredData = this.filterRecursive(filterText, data, "name");
+    this.dataService.dataChange.next(filteredData);
     if (filterText) {
-      this.treeControl.expandAll();
+      this.expandAll();
     } else {
-      this.treeControl.collapseAll();
+      this.collapseAll();
     }
   }
 
@@ -280,10 +254,12 @@ export class UbysTreeComponent implements OnInit {
       });
       // no string, return whole array
     } else {
-      filteredData = this.dataSource.data;
+      filteredData = this.dataService.createDataSource(this.treeDataSource);
     }
     return filteredData;
   }
+
+
 
   expandAll() {
     this.treeControl.expandAll();

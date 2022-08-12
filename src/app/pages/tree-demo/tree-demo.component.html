@@ -1,20 +1,6 @@
-<mat-grid-list cols="3">
-  <mat-grid-tile>
-    <app-ubys-tree [treeDataSource]="dataSource" [isFilterable]="true" [isSelectable]="true" [isChecklist]="true"
-      [isMultiSelectable]="true" [removeParentChildNodeDependency]="false"></app-ubys-tree>
-
-  </mat-grid-tile>
-  <mat-grid-tile>
-
-    <app-ubys-tree [treeDataSource]="dataSource" [isFilterable]="true" [isSelectable]="true" [isChecklist]="true"
-      [isMultiSelectable]="true"></app-ubys-tree>
-
-  </mat-grid-tile>
-  <mat-grid-tile>
-
-    <app-ubys-tree [treeDataSource]="dataSource" [isFilterable]="true" [isSelectable]="true" [isChecklist]="true"
-      [isMultiSelectable]="true"></app-ubys-tree>
-
-  </mat-grid-tile>
-
-</mat-grid-list>
+<app-ubys-tree
+  [treeDataSource]="dataSource"
+  [isFilterable]="true"
+  [turnOffHierarchicalSelection]="true"
+  [showControls]="true"
+></app-ubys-tree>
