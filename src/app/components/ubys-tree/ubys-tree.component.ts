@@ -4,8 +4,9 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 
-import { FlatTreeNode, ITreeModel, TreeNode } from './models/tree-item.model';
-import { TreeDataServiceServiceProvider } from './services/tree-data-service.service';
+
+import { TreeDataServiceServiceProvider } from '../../services/tree-data-service.service';
+import { FlatTreeNode, ITreeModel, TreeNode } from 'src/app/models/tree-item.model';
 
 @Component({
   selector: 'app-ubys-tree',

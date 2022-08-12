@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ITreeModel } from 'src/app/components/ubys-tree/models/tree-item.model';
+import { ITreeModel } from 'src/app/models/tree-item.model';
+
 import { ITreeDemoModel } from './model/tree-demo.model';
 
 @Component({

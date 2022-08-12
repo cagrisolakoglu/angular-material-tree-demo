@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTreeModule } from '@angular/material/tree';
 import { UbysTreeComponent } from './ubys-tree/ubys-tree.component';
+import { CsTreeComponent } from './cs-tree/cs-tree.component';
 
 
 @NgModule({
@@ -23,8 +24,12 @@ import { UbysTreeComponent } from './ubys-tree/ubys-tree.component';
     MatCardModule
   ],
   declarations: [
-    UbysTreeComponent
+    UbysTreeComponent,
+    CsTreeComponent
   ],
-  exports: [UbysTreeComponent]
+  exports: [
+    UbysTreeComponent,
+    CsTreeComponent
+  ]
 })
 export class UbysComponentModule { }

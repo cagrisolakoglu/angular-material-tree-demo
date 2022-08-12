@@ -1,0 +1,43 @@
+<div  class="cs-tree">
+  <!-- if dataSource available -->
+  <ng-template [ngIf]="dataSource">
+
+      <ul >
+        <!-- create recursive -->
+        <li *ngFor="let item of dataSource.data">
+          <mat-checkbox
+            [checked]="item.checked"
+            (change)="item.checked = !item.checked"
+          >
+            {{ item.name }}
+          </mat-checkbox>
+          <!-- if item has children -->
+          <ul *ngIf="item.children && item.children.length > 0">
+            <!-- create recursive -->
+            <li *ngFor="let child of item.children">
+              <mat-checkbox
+                [checked]="child.checked"
+                (change)="child.checked = !child.checked"
+              >
+                {{ child.name }}
+              </mat-checkbox>
+              <!-- if child has children -->
+              <ul *ngIf="child.children && child.children.length > 0">
+                <!-- create recursive -->
+                <li *ngFor="let grandChild of child.children">
+                  <mat-checkbox
+                    [checked]="grandChild.checked"
+                    (change)="grandChild.checked = !grandChild.checked"
+                  >
+                    {{ grandChild.name }}
+                  </mat-checkbox>
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+        </li>
+      </ul>
+
+  </ng-template>
+</div>
